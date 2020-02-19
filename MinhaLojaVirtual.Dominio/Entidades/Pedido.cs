@@ -1,11 +1,12 @@
 ﻿using MinhaLojaVirtual.Dominio.ObjetoDeValor;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MinhaLojaVirtual.Dominio.Entidades
 {
-    public class Pedido
+    public class Pedido : Entidade
     {
         public int Id { get; set; }
         public DateTime DataPedido { get; set; }
@@ -23,5 +24,17 @@ namespace MinhaLojaVirtual.Dominio.Entidades
         // pedido deve ter pelo menos UM item de pedido ou muitos itens de pedidos
         public ICollection<ItemPedido> ItensPedido { get; set; }
 
+        public override void Validate()
+        {
+            LimparMensagemDeValidacao();
+
+            if (! ItensPedido.Any())
+
+                AdicionarMensagem("Crítica - Pedido não pode ficar sem Item de Pedido");
+            if (string.IsNullOrEmpty(CEP))
+
+                AdicionarMensagem("Crítica - Capmpo CEP não pode estar vazio");
+            
+        }
     }
 }
